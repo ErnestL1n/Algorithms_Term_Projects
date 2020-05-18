@@ -1,56 +1,41 @@
-//aurthor:https://github.com/ErnestL1n
+#include <complex>
+#include <iostream>
+#include <valarray>
 
-//reference:Introduction to Algorithms, 3rd Edition (The MIT Press)
-//reference:https://rosettacode.org/wiki/Fast_Fourier_transform#C.2B.2B
-//This version is with Divide and Conquer approach
+const double PI = 3.141592653589793238460;
 
-#include<cstdlib>
-#include<iostream>
-#include<complex>
-#define _USE_MATH_DEFINES
-#include <math.h>   //  =>  M_PI
-#include<valarray>
+typedef std::complex<double> Complex;
+typedef std::valarray<Complex> CArray;
 
-
-
-const double PI=M_PI;
-
-using namespace std;
-
-typedef complex<double> Complex;
-
-typedef valarray<Complex> complexArray;
-
-// Type:int  Storage size: 4 bytes :-2147483648 to 2147483647
-// 2147483647=2^31
-// 32768=2^15
-
-
-#define N 32768
-#define M 10000
-
-
-void Recursive_FFT(complexArray& x) {
-	const size_t n = x.size();
-	if (n <= 1) return;
+// Cooley¡VTukey FFT (in-place, divide-and-conquer)
+// Higher memory requirements and redundancy although more intuitive
+void fft(CArray& x)
+{
+	const size_t N = x.size();
+	if (N <= 1) return;
 
 	// divide
-	complexArray even = x[std::slice(0, n / 2, 2)];
-	complexArray  odd = x[std::slice(1, n / 2, 2)];
+	CArray even = x[std::slice(0, N / 2, 2)];
+	CArray  odd = x[std::slice(1, N / 2, 2)];
 
 	// conquer
-	Recursive_FFT(even);
-	Recursive_FFT(odd);
+	fft(even);
+	fft(odd);
 
 	// combine
-	for (size_t k = 0; k < n / 2; ++k)
+	for (size_t k = 0; k < N / 2; ++k)
 	{
-		Complex t = std::polar(1.0, -2 * PI * k / n) * odd[k];
+		Complex t = std::polar(1.0, -2 * PI * k / N) * odd[k];
 		x[k] = even[k] + t;
 		x[k + N / 2] = even[k] - t;
 	}
 }
-void Recursive_FFT(complexArray& x)
+
+// Cooley-Tukey FFT (in-place, breadth-first, decimation-in-frequency)
+// Better optimized but less intuitive
+// !!! Warning : in some cases this code make result different from not optimased version above (need to fix bug)
+// The bug is now fixed @2017/05/30 
+void fftBit(CArray& x)
 {
 	// DFT
 	unsigned int N = x.size(), k = N, n;
@@ -97,31 +82,55 @@ void Recursive_FFT(complexArray& x)
 	//for (unsigned int i = 0; i < N; i++)
 	//	x[i] *= f;
 }
-	int main()
+
+// inverse fft (in-place)
+void ifft(CArray& x)
+{
+	// conjugate the complex numbers
+	x = x.apply(std::conj);
+
+	// forward fft
+	fft(x);
+
+	// conjugate the complex numbers again
+	x = x.apply(std::conj);
+
+	// scale the numbers
+	x /= x.size();
+}
+
+int main()
+{
+	Complex test[32768];
+
+
+	//N=32768,M=10000
+	//x[n]=1  <=>   mN-M<=n<=mN+M
+	//x[n]=0  <=>   mN+M<n<(m+1)N-M
+	//let m=1
+	//shift<=>array[0]=array[22768]
+
+
+	//n=22768~42768
+	for (int i = 0;i <= 20000;i++)test[i] = 1.0;
+	
+	//n=42769~55535
+	for (int i = 20001;i <= 32767;i++)test[i] = 0.0;
+
+
+	CArray data(test, 32768);
+
+	// forward fft
+	fft(data);
+
+	std::cout << "fft" << std::endl;
+	for (int i = 0; i < 32768; ++i)
 	{
-		const Complex test[] = { 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0 };
-		complexArray data(test, 8);
-
-
-
-		// forward fft
-		Recursive_FFT(data);
-
-		std::cout << "fft" << std::endl;
-		for (int i = 0; i < 8; ++i)
-		{
-			std::cout << data[i] << std::endl;
-		}
-
-		
-		
-
-		return 0;
+		std::cout << data[i] << std::endl;
 	}
 
 
 
 
-
-
-
+	return 0;
+}
