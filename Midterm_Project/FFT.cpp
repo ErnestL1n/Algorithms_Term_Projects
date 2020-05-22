@@ -138,8 +138,10 @@ int main()
 	//x[n]=0  <=>   mN+M<n<(m+1)N-M
 	//let m=1
 	//shift<=>array[0]=array[22768]
-
-
+	std::cout << std::endl;
+	std::cout << "----------------------Please wait for about one minute,three procedures are running----------------------";
+	std::cout << std::endl;
+	std::cout << std::endl;
 	//n=22768~42768
 	for (int i = 0;i <= 20000;i++)test[i] = 1.0;
 
@@ -179,36 +181,38 @@ int main()
 
 
 
-	//each time run 50 points
+	//each time run 32 points
 	do {
 
 
 		std::cout << "-------------------After Executing DFT(StraightForward)------------------------" << std::endl;
 
-		for (int run = 50;i != 32768 && run != 0;i++, run--) {
+		for (int run = 32;i != 32768 && run != 0;i++, run--) {
 			printf("Point%7d-----(real,imaginary)parts separated-----is : ", i);
 			std::cout << Dft[i] << std::endl;
 		}
 
-
+		std::cout << std::endl;
+		std::cout << std::endl;
 
 		std::cout << "-------------------After Executing FFT(Divide And Conquer)------------------------" << std::endl;
 
-		for (int run = 50;j != 32768 && run != 0;j++, run--) {
+		for (int run = 32;j != 32768 && run != 0;j++, run--) {
 			printf("Point%7d-----(real,imaginary)parts separated-----is : ", j);
 			std::cout << Rfft[j] << std::endl;
 		}
 
-
+		std::cout << std::endl;
+		std::cout << std::endl;
 
 		std::cout << "-------------------After Executing FFT(BitReversal)-------------------------------" << std::endl;
 
-		for (int run = 50;k != 32768 && run != 0;k++, run--) {
+		for (int run = 32;k != 32768 && run != 0;k++, run--) {
 			printf("Point%7d-----(real,imaginary)parts separated-----is : ", k);
 			std::cout << Ifft[k] << std::endl;
 		}
 
-
+		std::cout << std::endl;
 		std::cout << "ContinueToPrint? Please press 'Y' then enter" << std::endl;
 
 		std::cin >> option;
