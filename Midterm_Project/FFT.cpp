@@ -149,8 +149,8 @@ int main()
 	for (int i = 20001;i <= 32767;i++)test[i] = 0.0;
 
 	//for naive DFT
-	CArray data1(test, 32768);
-	CArray Dft(test, 32768);
+	CArray dft(test, 32768);  //origin one
+	CArray Dft(test, 32768);  //after computing
 
 
 	CArray Rfft(test, 32768);
@@ -162,7 +162,7 @@ int main()
 
 	//measure execution time
 	start = clock();
-	DFT(data1, Dft);
+	DFT(dft, Dft);
 	end = clock();
 	std::cout << "                Time taken by procedure      DFT     is :" << (double)(end - start) / double(CLOCKS_PER_SEC) << "seconds" << std::endl;
 	std::cout << std::endl;
