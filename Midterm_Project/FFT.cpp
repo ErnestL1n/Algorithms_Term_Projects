@@ -4,6 +4,7 @@
 #include <valarray>
 #include <ctime>
 
+//reference:https://rosettacode.org/wiki/Fast_Fourier_transform#C.2B.2B
 
 const double PI = 3.141592653589793238460;
 
