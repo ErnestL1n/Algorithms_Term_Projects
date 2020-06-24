@@ -19,12 +19,12 @@ int maximum(int a, int b) {
 	return (a > b) ? a : b;
 }
 
-int FindMaximum_Crossing_Subarray(int array[],int low,int middle,int high) {
+int FindMaximum_Crossing_Subarray(int array[], int low, int middle, int high) {
 	int leftsum = INT_MIN;
 	int sum = 0;
 	for (int i = middle;i >= low;i--) {
 		sum += array[i];
-		if (sum > leftsum) 
+		if (sum > leftsum)
 			leftsum = sum;
 	}
 	int rightsum = INT_MIN;
@@ -39,24 +39,28 @@ int FindMaximum_Crossing_Subarray(int array[],int low,int middle,int high) {
 
 int Find_Maximum_Subarray(int array[], int low, int high) {
 	if (low == high)return array[low];
-	
-	int middle = (low + high)/2;
-	
+
+	int middle = (low + high) / 2;
+
 	return maximum(Find_Maximum_Subarray(array, low, middle),
-		maximum(Find_Maximum_Subarray(array, middle +1,high), FindMaximum_Crossing_Subarray(array,low, middle,high)));
+		maximum(Find_Maximum_Subarray(array, middle + 1, high), FindMaximum_Crossing_Subarray(array, low, middle, high)));
 
 }
 
 int main() {
-	int array[] = {-12321, 0, 9, -12, 66, 1 };
+	int array[] = { -12321, 0, 66, -12, 66, 1 };
 	int n = sizeof(array) / sizeof(array[0]);
 
-	printf("The array's elements are:\n");
-	for (int i = 0;i < n;i++)printf("%d  ", array[i]);
+	printf("The array contains elements :(You can set it in the source code by yourself)\n\n[ ");
+	for (int i = 0;i < n;i++)printf("%d ", array[i]);
 
-	printf("\n");
+	printf("]\n\n");
 
-	printf("Maximum sum in any contiguous suarray is %d\n", Find_Maximum_Subarray(array, 0, n-1));
+	printf("Maximum sum in any contiguous suarray is %d\n", Find_Maximum_Subarray(array, 0, n - 1));
+
+	char option;
+	printf("\npress any key to close ");
+	scanf_s("%d", &option);
 
 	return 0;
 
