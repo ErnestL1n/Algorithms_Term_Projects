@@ -15,17 +15,17 @@ int minimum(int a, int b) {
 	return (a < b) ? a : b;
 }
 
-int Binomial_Cofficient(int n,int k) {
+int Binomial_Cofficient(int n, int k) {
 
-	int **BioCof = (int**)calloc((n + 1),sizeof(int*));
+	int** BioCof = (int**)calloc((n + 1), sizeof(int*));
 	for (int i = 0;i <= n;i++)BioCof[i] = (int*)calloc((k + 1), sizeof(int));
 
-	for(int i=0;i<=n;i++)
+	for (int i = 0;i <= n;i++)
 		for (int j = 0;j <= minimum(i, k);j++) {
 			if (j == 0 || j == i)BioCof[i][j] = 1;
 
 			else {
-				BioCof[i][j] = BioCof[i - 1][j] + BioCof[i - 1][j - 1]; 
+				BioCof[i][j] = BioCof[i - 1][j] + BioCof[i - 1][j - 1];
 			}
 		}
 
@@ -33,12 +33,21 @@ int Binomial_Cofficient(int n,int k) {
 	return BioCof[n][k];
 }
 
+
 int main() {
 
-	int n = 9,k = 6;
+	int n, k;
+	printf("Enter Binomial Coefficient (n>=k)\n\n");
+	printf("n= ");
+	scanf_s("%d", &n);
+	printf("k= ");
+	scanf_s("%d", &k);
 
-	printf("Binomial Coefficient C(%d, %d)=%d", n, k, Binomial_Cofficient(n, k));
+	printf("\nBinomial Coefficient C(%d, %d)=%d", n, k, Binomial_Cofficient(n, k));
 	printf("\n\n");
 
+	char option;
+	printf("\npress any key to close ");
+	scanf_s("%d", &option);
 	return 0;
 }
